@@ -1,6 +1,6 @@
 # TripLab — CS3103 Full-Stack HTTP Teaching Demo
 
-This is the **upgraded version** of the Trip API used in the University of New Brunswick CS3103 *Programming on the Web* teaching presentation.
+This is the Trip API used in the University of New Brunswick CS3103 *Programming on the Web* teaching presentation.
 
 **It includes both frontend and backend in one Spring Boot application.** No React setup and no second web server are needed.
 
