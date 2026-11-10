@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#12243e">
+  <title>TripLab · CS3103 HTTP & REST API Demo</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script defer src="/app.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand-lockup" aria-label="TripLab home">
+        <span class="brand-mark" aria-hidden="true">T<span class="brand-dot">.</span></span>
+        <span><strong>TripLab</strong><small>CS3103 · Programming on the Web</small></span>
+      </div>
+      <div class="header-actions">
+        <span class="environment"><span class="signal" aria-hidden="true"></span>LOCAL DEMO</span>
+        <button class="reset-btn" id="reset-btn" type="button" title="Restore sample trips">↻ Reset demo</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-wrap">
+    <div class="workspace">
+      <div class="controls-column">
+        <section class="panel trips-panel" aria-labelledby="trips-title">
+          <div class="panel-heading">
+            <div class="heading-main">
+              <span class="section-icon" aria-hidden="true">≡</span>
+              <div><h2 id="trips-title">Trip directory</h2><p>Read resources from the server</p></div>
+            </div>
+            <button class="outline-btn" id="refresh-btn" type="button">↻ Refresh</button>
+          </div>
+          <div class="endpoint-line"><span class="verb verb-get">GET</span><code>/api/trips</code><span class="faint">· List all</span></div>
+          <div id="trips-list" class="trips-list" aria-live="polite">
+            <div class="empty-state">Loading sample trips…</div>
+          </div>
+          <form id="lookup-form" class="lookup-form">
+            <div><label for="trip-id">Find trip by ID</label><span class="helper">Try 101 (exists) or 999 (missing)</span></div>
+            <div class="lookup-controls">
+              <input id="trip-id" name="tripId" inputmode="numeric" type="number" min="1" step="1" value="101" aria-label="Trip ID">
+              <button class="dark-btn" id="lookup-btn" type="submit">Inspect trip →</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="panel create-panel" aria-labelledby="create-title">
+          <div class="panel-heading">
+            <div class="heading-main">
+              <span class="section-icon plus-icon" aria-hidden="true">+</span>
+              <div><h2 id="create-title">Create a trip</h2><p>Send JSON data to the server</p></div>
+            </div>
+            <span class="small-tag">POST body</span>
+          </div>
+          <div class="endpoint-line"><span class="verb verb-post">POST</span><code>/api/trips</code><span class="faint">· Create new</span></div>
+          <form id="create-form" class="create-form" novalidate>
+            <div class="form-fields">
+              <label for="origin">Origin<input id="origin" name="origin" type="text" value="Moncton" placeholder="e.g. Moncton" maxlength="100"></label>
+              <div class="input-arrow" aria-hidden="true">→</div>
+              <label for="destination">Destination<input id="destination" name="destination" type="text" value="Fredericton" placeholder="e.g. Fredericton" maxlength="100"></label>
+            </div>
+            <button class="primary-btn" id="create-btn" type="submit">+ Create trip <span>POST →</span></button>
+          </form>
+        </section>
+
+      </div>
+
+      <section class="inspector panel" aria-labelledby="inspector-title">
+        <div class="panel-heading inspector-heading">
+          <div class="heading-main">
+            <span class="section-icon inspector-icon" aria-hidden="true">↗</span>
+            <div><h2 id="inspector-title">HTTP inspector</h2><p>See the essential parts of each request and response</p></div>
+          </div>
+          <span class="live-badge"><span class="tiny-pulse"></span> LIVE TRACE</span>
+        </div>
+        <div class="status-strip" aria-live="polite">
+          <div><span class="strip-label">LATEST EXCHANGE</span><div class="latest-route"><span id="trace-method" class="verb verb-neutral">—</span><code id="trace-url">Waiting for a request</code></div></div>
+          <div class="status-right"><span class="strip-label">RESPONSE</span><div id="trace-status" class="status-text neutral">—</div><small id="trace-time">—</small></div>
+        </div>
+
+        <div class="inspector-body">
+          <div class="trace-section">
+            <div class="trace-title"><span class="trace-number">01</span><h3>Request</h3><span class="right-sub">Browser → Server</span></div>
+            <div class="trace-keyline"><span class="subhead">METHOD + ENDPOINT</span><code id="request-target">—</code></div>
+            <div class="code-card">
+              <div class="code-header"><span>REQUEST HEADERS</span><span class="code-tag">HTTP</span></div>
+              <pre id="request-headers">No request yet.</pre>
+            </div>
+            <div class="code-card compact-code">
+              <div class="code-header"><span>REQUEST BODY</span><span class="code-tag">JSON</span></div>
+              <pre id="request-body">—</pre>
+            </div>
+          </div>
+          <div class="trace-divider"><span aria-hidden="true">↓</span> Server processes request</div>
+          <div class="trace-section">
+            <div class="trace-title"><span class="trace-number response-number">02</span><h3>Response</h3><span class="right-sub">Server → Browser</span></div>
+            <div class="response-meta"><span class="subhead">CONTENT-TYPE</span><code id="response-content-type">—</code><span class="subhead location-label">LOCATION</span><code id="response-location">—</code></div>
+            <div class="code-card response-code">
+              <div class="code-header"><span>RESPONSE BODY</span><span class="code-tag">JSON</span></div>
+              <pre id="response-body">Click Refresh, Inspect, or Create to begin.</pre>
+            </div>
+          </div>
+        </div>
+        <div class="interpretation" aria-live="polite"><span class="lightbulb" aria-hidden="true">i</span><p id="interpretation-text">The inspector shows the HTTP request, the response status, and the JSON returned by your Spring Boot backend.</p></div>
+      </section>
+    </div>
+    <footer class="footer"><span>TRIPLAB / CS3103</span><span>Frontend: HTML + JavaScript &nbsp;·&nbsp; Backend: Java + Spring Boot &nbsp;·&nbsp; In-memory demo data</span></footer>
+  </main>
+</body>
+</html>
